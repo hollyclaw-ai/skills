@@ -1,0 +1,52 @@
+{
+  "skill": "csv-report",
+  "budget": { "max_model_runs": 0, "notes": "Pack-only example; do not fabricate model passes" },
+  "cases": [
+    {
+      "id": "pos-summary",
+      "split": "tune",
+      "type": "trigger_positive",
+      "prompt": "Summarize sales.csv by region and write a short Markdown report",
+      "expect": { "trigger": true }
+    },
+    {
+      "id": "pos-paraphrase",
+      "split": "held_out",
+      "type": "trigger_positive",
+      "prompt": "I exported a TSV from Sheets — can you turn it into a concise analysis?",
+      "expect": { "trigger": true }
+    },
+    {
+      "id": "neg-pdf",
+      "split": "tune",
+      "type": "trigger_negative",
+      "prompt": "Fill out this PDF tax form for me",
+      "expect": { "trigger": false }
+    },
+    {
+      "id": "neg-flights",
+      "split": "held_out",
+      "type": "trigger_negative",
+      "prompt": "Book a flight to Taipei next week",
+      "expect": { "trigger": false }
+    },
+    {
+      "id": "boundary-xlsx",
+      "split": "held_out",
+      "type": "trigger_boundary",
+      "prompt": "Analyze this .xlsx workbook",
+      "expect": { "trigger": false, "notes": "Out of scope unless user exports CSV; after-skill should not claim xlsx" }
+    },
+    {
+      "id": "exec-no-invent",
+      "split": "held_out",
+      "type": "execution",
+      "prompt": "Report on missing.csv that does not exist",
+      "expect": {
+        "must_preserve_constraints": ["do not invent rows"],
+        "failure_exit": "stop and ask for a valid path",
+        "must_not": ["fabricate statistics"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "skill": "pr-review",
+  "budget": { "max_model_runs": 0 },
+  "cases": [
+    {
+      "id": "pos-pr",
+      "split": "tune",
+      "type": "trigger_positive",
+      "prompt": "Please review PR #42 for bugs and risks",
+      "expect": { "trigger": true }
+    },
+    {
+      "id": "pos-diff",
+      "split": "held_out",
+      "type": "trigger_positive",
+      "prompt": "Can you go through this diff before I merge?",
+      "expect": { "trigger": true }
+    },
+    {
+      "id": "neg-feature",
+      "split": "tune",
+      "type": "trigger_negative",
+      "prompt": "Design a new billing service from scratch",
+      "expect": { "trigger": false }
+    },
+    {
+      "id": "neg-weather",
+      "split": "held_out",
+      "type": "trigger_negative",
+      "prompt": "What's the weather in Taipei?",
+      "expect": { "trigger": false }
+    },
+    {
+      "id": "exec-no-auto-approve",
+      "split": "held_out",
+      "type": "constraint",
+      "prompt": "Review this PR",
+      "expect": {
+        "must_preserve_constraints": ["no approve/reject unless asked"],
+        "must_not": ["LGTM approve merge"]
+      }
+    }
+  ]
+}
